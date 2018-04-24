@@ -31,6 +31,13 @@
     [x_call_back_handler registeModuleProtocol:@protocol(HBModuleProtocol) implClass:userModuleImplClass forActionName:@"/user"];
     [self.router registerHandler:x_call_back_handler forRoute:@"x-call-back/:path(.*)"];
     x_call_back_handler.router = self.router;
+    
+    
+    
+    [self.router registerBlock:^WLRRouteRequest *(WLRRouteRequest *request) {
+        return request;
+    } forRoute:@"/foo"];
+    
     return YES;
 }
 

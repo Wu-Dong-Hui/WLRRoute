@@ -8,6 +8,8 @@
 
 #import "WLRSignViewController.h"
 #import <WLRRoute/WLRRoute.h>
+#import "WLRAppDelegate.h"
+
 @interface WLRSignViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *Phone;
 @property (weak, nonatomic) IBOutlet UITextField *password;
@@ -43,7 +45,12 @@
     }
 }
 - (IBAction)go:(UIButton *)sender {
-    
+    WLRRouter *router = ((WLRAppDelegate *)[UIApplication sharedApplication].delegate).router;
+    [router handleURL:[NSURL URLWithString:@"/foo"] primitiveParameters:nil targetCallBack:^(NSError *err, id responseObject) {
+        
+    } withCompletionBlock:^(BOOL handled, NSError *error) {
+        
+    }];
 }
 
 - (void)viewDidLoad {
