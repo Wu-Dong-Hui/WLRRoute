@@ -183,6 +183,9 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
     if (!request) {
         error = [NSError WLRNotFoundError];
     }
+    if (isHandled == false && self.shouldFallbackGlobalRouter && ![self.scheme isEqualToString:WLRRouterGlobalRouteScheme]) {
+        isHandled = [[WLRRouter globalRouter] handleURL:URL primitiveParameters:primitiveParameters targetCallBack:targetCallBack withCompletionBlock:completionBlock];
+    }
     if (isHandled == false && self.unhandledURLHandler != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.unhandledURLHandler(self, URL, primitiveParameters);
