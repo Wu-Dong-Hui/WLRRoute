@@ -19,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    self.router = [[WLRRouter alloc]init];
+    self.router = [WLRRouter globalRouter];
     [self.router registerHandler:[[WLRSignHandler alloc]init] forRoute:@"/signin/:phone([0-9]+)"];
     [self.router registerHandler:[[WLRUserHandler alloc]init] forRoute:@"/user"];
     HBXCALLBACKHandler * x_call_back_handler =[[HBXCALLBACKHandler alloc]init];
@@ -32,7 +32,9 @@
     [self.router registerHandler:x_call_back_handler forRoute:@"x-call-back/:path(.*)"];
     x_call_back_handler.router = self.router;
     
-    
+    [self.router setUnhandledURLHandler:^(WLRRouter * _Nonnull routes, NSURL * _Nullable URL, NSDictionary<NSString *,id> * _Nullable parameters) {
+        NSLog(@"%@, %@, %@", routes, URL, parameters);
+    }];
     
     [self.router registerBlock:^WLRRouteRequest *(WLRRouteRequest *request) {
         return request;

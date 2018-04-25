@@ -12,13 +12,63 @@
 #import "WLRRouteMatcher.h"
 #import "WLRRouteRequest.h"
 #import "NSError+WLRError.h"
+
+NSString *const WLRRouterGlobalRouteScheme = @"WLRRouterGlobalRouteScheme";
+
+static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
+
 @interface WLRRouter()
 @property(nonatomic,strong)NSMutableDictionary * routeMatchers;
 @property(nonatomic,strong)NSMutableDictionary * routeHandles;
 @property(nonatomic,strong)NSMutableDictionary * routeblocks;
 @property(nonatomic,strong)NSHashTable * middlewares;
+
+@property (nonatomic, copy) NSString *scheme;
+
 @end
+
+
 @implementation WLRRouter
+
+
++ (instancetype)globalRouter {
+    static WLRRouter *_globalRouter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _globalRouter = [WLRRouter routerForScheme:WLRRouterGlobalRouteScheme];
+    });
+    return _globalRouter;
+}
+
++ (instancetype)routerForScheme:(NSString *)scheme {
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        WLRGlobal_routeControllersMap = [NSMutableDictionary dictionary];
+    });
+    
+    WLRRouter *router = WLRGlobal_routeControllersMap[scheme];
+    if (router == nil) {
+        router = [[self alloc] init];
+        router.scheme = scheme;
+        WLRGlobal_routeControllersMap[scheme] = router;
+    }
+    
+    return router;
+}
++ (BOOL)canHandleURL:(NSURL *)url {
+    return [[self _routerForURL:url] canHandleWithURL:url];
+}
+
++ (BOOL)handleURL:(NSURL *)url {
+    return [[self _routerForURL:url] handleURL:url primitiveParameters:nil targetCallBack:nil withCompletionBlock:nil];
+}
+
++ (BOOL)handleURL:(NSURL *)URL primitiveParameters:(NSDictionary *)primitiveParameters targetCallBack:(void (^)(NSError *, id))targetCallBack withCompletionBlock:(void (^)(BOOL, NSError *))completionBlock {
+    return [[self _routerForURL:URL] handleURL:URL primitiveParameters:primitiveParameters targetCallBack:targetCallBack withCompletionBlock:completionBlock];
+}
+
+
 -(NSHashTable *)middlewares{
     if (!_middlewares) {
         _middlewares = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
@@ -85,7 +135,10 @@
         [self registerHandler:obj forRoute:route];
     }
 }
--(BOOL)canHandleWithURL:(NSURL *)url{
+- (BOOL)canHandleWithURL:(NSURL *)url {
+    if (url == nil) {
+        return false;
+    }
     for (NSString * route in self.routeMatchers.allKeys) {
         WLRRouteMatcher * matcher = [self.routeMatchers objectForKey:route];
         WLRRouteRequest * request = [matcher createRequestWithURL:url primitiveParameters:nil targetCallBack:nil];
@@ -130,6 +183,11 @@
     if (!request) {
         error = [NSError WLRNotFoundError];
     }
+    if (isHandled == false && self.unhandledURLHandler != nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.unhandledURLHandler(self, URL, primitiveParameters);
+        });
+    }
     [self completeRouteWithSuccess:isHandled error:error completionHandler:completionBlock];
     return isHandled;
 }
@@ -173,5 +231,12 @@
             completionHandler(handled, error);
         });
     }
+}
+#pragma mark - Private
++ (instancetype)_routerForURL:(NSURL *)url {
+    if (url == nil) {
+        return nil;
+    }
+    return WLRGlobal_routeControllersMap[url.scheme] ?: [self globalRouter];
 }
 @end
