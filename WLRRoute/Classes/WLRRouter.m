@@ -28,7 +28,9 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
 @end
 
 
-@implementation WLRRouter
+@implementation WLRRouter {
+    dispatch_semaphore_t _registerSema;
+}
 
 
 + (instancetype)globalRouter {
@@ -43,16 +45,22 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
 + (instancetype)routerForScheme:(NSString *)scheme {
     
     static dispatch_once_t onceToken;
+    static dispatch_semaphore_t sema;
+    
     dispatch_once(&onceToken, ^{
         WLRGlobal_routeControllersMap = [NSMutableDictionary dictionary];
+        sema = dispatch_semaphore_create(1);
     });
     
+    
+    dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, 5*1000*1000*1000));
     WLRRouter *router = WLRGlobal_routeControllersMap[scheme];
     if (router == nil) {
         router = [[self alloc] init];
         router.scheme = scheme;
         WLRGlobal_routeControllersMap[scheme] = router;
     }
+    dispatch_semaphore_signal(sema);
     
     return router;
 }
@@ -90,21 +98,26 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
         _routeblocks = [NSMutableDictionary dictionary];
         _routeHandles = [NSMutableDictionary dictionary];
         _routeMatchers = [NSMutableDictionary dictionary];
+        _registerSema = dispatch_semaphore_create(1);
     }
     return self;
 }
 -(void)registerBlock:(WLRRouteRequest *(^)(WLRRouteRequest *))routeHandlerBlock forRoute:(NSString *)route{
     if (routeHandlerBlock && [route length]) {
+        dispatch_semaphore_wait(_registerSema, dispatch_time(DISPATCH_TIME_NOW, 5*1000*1000*1000));
         [self.routeMatchers setObject:[WLRRouteMatcher matcherWithRouteExpression:route] forKey:route];
         [self.routeHandles removeObjectForKey:route];
         self.routeblocks[route] = routeHandlerBlock;
+        dispatch_semaphore_signal(_registerSema);
     }
 }
 -(void)registerHandler:(WLRRouteHandler *)handler forRoute:(NSString *)route{
     if (handler && [route length]) {
+        dispatch_semaphore_wait(_registerSema, dispatch_time(DISPATCH_TIME_NOW, 5*1000*1000*1000));
         [self.routeMatchers setObject:[WLRRouteMatcher matcherWithRouteExpression:route] forKey:route];
         [self.routeblocks removeObjectForKey:route];
         self.routeHandles[route] = handler;
+        dispatch_semaphore_signal(_registerSema);
     }
 }
 -(id)objectForKeyedSubscript:(NSString *)key{
@@ -123,6 +136,7 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
     if (!([route isKindOfClass:[NSString class]] && [route length])) {
         return;
     }
+    dispatch_semaphore_wait(_registerSema, dispatch_time(DISPATCH_TIME_NOW, 5*1000*1000*1000));
     if (!obj) {
         [self.routeblocks removeObjectForKey:route];
         [self.routeHandles removeObjectForKey:route];
@@ -134,6 +148,7 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
     else if ([obj isKindOfClass:[WLRRouteHandler class]]){
         [self registerHandler:obj forRoute:route];
     }
+    dispatch_semaphore_signal(_registerSema);
 }
 - (BOOL)canHandleWithURL:(NSURL *)url {
     if (url == nil) {
