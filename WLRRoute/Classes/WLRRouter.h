@@ -78,7 +78,7 @@ extern NSString *const WLRRouterGlobalRouteScheme;
  @param completionBlock 完成路由中转的block
  @return 是否能够handle
  */
-+ (BOOL)handleURL:(NSURL *)URL primitiveParameters:(NSDictionary *)primitiveParameters targetCallBack:(void(^)(NSError *, id responseObject))targetCallBack withCompletionBlock:(void(^)(BOOL handled, NSError *error))completionBlock;
++ (BOOL)handleURL:(NSURL *)URL primitiveParameters:(NSDictionary *)primitiveParameters targetCallBack:(void(^)(NSError *error, id responseObject))targetCallBack withCompletionBlock:(void(^)(BOOL handled, NSError *error))completionBlock;
 /**
  注册一个route表达式并与一个block处理相关联
  
@@ -127,7 +127,7 @@ extern NSString *const WLRRouterGlobalRouteScheme;
  @param completionBlock 完成路由中转的block
  @return 是否能够handle
  */
--(BOOL)handleURL:(NSURL *)URL primitiveParameters:(NSDictionary *)primitiveParameters targetCallBack:(void(^)(NSError *, id responseObject))targetCallBack withCompletionBlock:(void(^)(BOOL handled, NSError *error))completionBlock;
+-(BOOL)handleURL:(NSURL *)URL primitiveParameters:(NSDictionary *)primitiveParameters targetCallBack:(void(^)(NSError *error, id responseObject))targetCallBack withCompletionBlock:(void(^)(BOOL handled, NSError *error))completionBlock;
 
 /**
  添加一个中间件
