@@ -13,6 +13,7 @@
 #import "WLRRouteRequest.h"
 #import "NSError+WLRError.h"
 
+
 NSString *const WLRRouterGlobalRouteScheme = @"WLRRouterGlobalRouteScheme";
 
 static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
@@ -22,6 +23,7 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
 @property(nonatomic,strong)NSMutableDictionary * routeHandles;
 @property(nonatomic,strong)NSMutableDictionary * routeblocks;
 @property(nonatomic,strong)NSHashTable * middlewares;
+@property (nonatomic, strong) NSHashTable *interceptors;
 
 @property (nonatomic, copy) NSString *scheme;
 
@@ -83,14 +85,30 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
     }
     return _middlewares;
 }
+- (NSHashTable *)interceptors {
+    if (_interceptors) {
+        return _interceptors;
+    }
+    return _interceptors = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+}
 -(void)addMiddleware:(id<WLRRouteMiddleware>)middleware{
     if (middleware) {
         [self.middlewares addObject:middleware];
     }
 }
+- (void)addInterceptor:(id <WLRRouteInterceptor>)interceptor {
+    if (interceptor) {
+        [self.interceptors addObject:interceptor];
+    }
+}
 -(void)removeMiddleware:(id<WLRRouteMiddleware>)middleware{
     if ([self.middlewares containsObject:middleware]) {
         [self.middlewares removeObject:middleware];
+    }
+}
+- (void)removeInterceptor:(id <WLRRouteInterceptor>)interceptor {
+    if (interceptor && [self.interceptors containsObject:interceptor]) {
+        [self.interceptors removeObject:interceptor];
     }
 }
 -(instancetype)init{
@@ -170,9 +188,18 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
     NSError * error;
     WLRRouteRequest * request;
     __block BOOL isHandled = NO;
+    
+    for (id <WLRRouteInterceptor> interceptor in self.interceptors) {
+        if (interceptor && [interceptor respondsToSelector:@selector(router:willHandleURL:)]) {
+            [interceptor router:self willHandleURL:URL];
+        }
+    }
+    
+    
     for (NSString * route in self.routeMatchers.allKeys) {
         WLRRouteMatcher * matcher = [self.routeMatchers objectForKey:route];
         request = [matcher createRequestWithURL:URL primitiveParameters:primitiveParameters targetCallBack:targetCallBack];
+        /*
         if (request) {
             NSDictionary * responseObject;
             for (id<WLRRouteMiddleware>middleware in self.middlewares){
@@ -194,17 +221,45 @@ static NSMutableDictionary *WLRGlobal_routeControllersMap = nil;
             }
             break;
         }
+        */
+        if (request) {
+            for (id <WLRRouteInterceptor> interceptor in self.interceptors) {
+                if (interceptor && [interceptor respondsToSelector:@selector(router:willHandleURL:request:)]) {
+                    [interceptor router:self willHandleURL:URL request:request];
+                }
+            }
+            isHandled = [self handleRouteExpression:route withRequest:request error:&error];
+            break;
+        }
     }
     if (!request) {
         error = [NSError WLRNotFoundError];
     }
     if (isHandled == false && self.shouldFallbackGlobalRouter && ![self.scheme isEqualToString:WLRRouterGlobalRouteScheme]) {
+        for (id <WLRRouteInterceptor> interceptor in self.interceptors) {
+            if (interceptor && [interceptor respondsToSelector:@selector(router:willFallbackGlobalRouterForURL:)]) {
+                [interceptor router:self willFallbackGlobalRouterForURL:URL];
+            }
+        }
         isHandled = [[WLRRouter globalRouter] handleURL:URL primitiveParameters:primitiveParameters targetCallBack:targetCallBack withCompletionBlock:completionBlock];
     }
     if (isHandled == false && self.unhandledURLHandler != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.unhandledURLHandler(self, URL, primitiveParameters);
         });
+    }
+    if (isHandled) {
+        for (id <WLRRouteInterceptor> interceptor in self.interceptors) {
+            if (interceptor && [interceptor respondsToSelector:@selector(router:didSuccessHandleURL:)]) {
+                [interceptor router:self didSuccessHandleURL:URL];
+            }
+        }
+    } else {
+        for (id <WLRRouteInterceptor> interceptor in self.interceptors) {
+            if (interceptor && [interceptor respondsToSelector:@selector(router:didFailHandleURL:)]) {
+                [interceptor router:self didFailHandleURL:URL];
+            }
+        }
     }
     [self completeRouteWithSuccess:isHandled error:error completionHandler:completionBlock];
     return isHandled;

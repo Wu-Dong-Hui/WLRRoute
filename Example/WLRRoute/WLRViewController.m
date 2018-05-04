@@ -9,7 +9,10 @@
 #import "WLRViewController.h"
 #import <WLRRoute/WLRRoute.h>
 #import "WLRAppDelegate.h"
-@interface WLRViewController ()<WLRRouteMiddleware>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import <WLRRoute/WLRRouteInterceptorProtocol.h>
+
+@interface WLRViewController ()<WLRRouteMiddleware, WLRRouteInterceptor>
 @property(nonatomic,weak)WLRRouter * router;
 @end
 
@@ -19,7 +22,7 @@
 {
     [super viewDidLoad];
     self.router = ((WLRAppDelegate *)[UIApplication sharedApplication].delegate).router;
-    [self.router addMiddleware:self];
+    [self.router addInterceptor:self];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 -(NSDictionary *)middlewareHandleRequestWith:(WLRRouteRequest *__autoreleasing *)primitiveRequest error:(NSError *__autoreleasing *)error{
@@ -33,17 +36,31 @@
 }
 - (IBAction)userClick:(UIButton *)sender {
     [self.router handleURL:[NSURL URLWithString:@"WLRDemo://com.wlrroute.demo/user"] primitiveParameters:@{@"user":@"Neo~🙃🙃"} targetCallBack:^(NSError *error, id responseObject) {
-        NSLog(@"UserCallBack");
+        NSLog(@"UserCallBack %@", responseObject);
     } withCompletionBlock:^(BOOL handled, NSError *error) {
-        NSLog(@"UserHandleCompletion");
+        NSLog(@"UserHandleCompletion %@", error);
     }];
+    
 }
 - (IBAction)SiginClick:(UIButton *)sender {
-    [self.router handleURL:[NSURL URLWithString:@"WLRDemo://x-call-back/signin?x-success=WLRDemo%3A%2F%2Fx-call-back%2Fuser&phone=17621425586"] primitiveParameters:nil targetCallBack:^(NSError *error, id responseObject) {
-        NSLog(@"SiginCallBack");
-    } withCompletionBlock:^(BOOL handled, NSError *error) {
-        NSLog(@"SiginHandleCompletion");
+    [self.router handleURL:[NSURL URLWithString:@"/signin/13366376114"] primitiveParameters:@{} targetCallBack:^(NSError * _Nonnull error, id  _Nonnull responseObject) {
+        if (responseObject && [responseObject objectForKey:@"userid"]) {
+            [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"%@", responseObject[@"userid"]]];
+        }
+    } withCompletionBlock:^(BOOL handled, NSError * _Nonnull error) {
+        
     }];
+    
+    /*
+    
+    [self.router handleURL:[NSURL URLWithString:@"WLRDemo://x-call-back/signin?x-success=WLRDemo%3A%2F%2Fx-call-back%2Fuser&phone=17621425586"] primitiveParameters:nil targetCallBack:^(NSError *error, id responseObject) {
+        NSLog(@"SiginClick %@", responseObject);
+    } withCompletionBlock:^(BOOL handled, NSError *error) {
+        NSLog(@"SiginHandleCompletion %@", error);
+    }];
+    
+    
+    */
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,5 +68,20 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+#pragma mark - WLRRouteInterceptor
+- (void)router:(WLRRouter *)router willHandleURL:(NSURL *)URL {
+    NSLog(@"WLRRouteInterceptor~router:%@, ~willHandleURL:%@", router, URL);
+}
+- (void)router:(WLRRouter *)router willHandleURL:(NSURL *)URL request:(WLRRouteRequest *)request {
+    NSLog(@"WLRRouteInterceptor~router:%@, ~willHandleURL:%@, ~request:%@", router, URL, request);
+}
+- (void)router:(WLRRouter *)router willFallbackGlobalRouterForURL:(NSURL *)URL {
+    NSLog(@"WLRRouteInterceptor~router:%@, ~willFallbackGlobalRouterForURL:%@", router, URL);
+}
+- (void)router:(WLRRouter *)router didSuccessHandleURL:(NSURL *)URL {
+    NSLog(@"WLRRouteInterceptor~router:%@, ~didSuccessHandleURL:%@", router, URL);
+}
+- (void)router:(WLRRouter *)router didFailHandleURL:(NSURL *)URL {
+    NSLog(@"WLRRouteInterceptor~router:%@, ~didFailHandleURL:%@", router, URL);
+}
 @end

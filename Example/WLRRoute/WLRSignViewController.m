@@ -9,6 +9,7 @@
 #import "WLRSignViewController.h"
 #import <WLRRoute/WLRRoute.h>
 #import "WLRAppDelegate.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface WLRSignViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *Phone;
@@ -45,13 +46,29 @@
     }
 }
 - (IBAction)go:(UIButton *)sender {
-    WLRRouter *router = ((WLRAppDelegate *)[UIApplication sharedApplication].delegate).router;
-    [router handleURL:[NSURL URLWithString:@"/foo"] primitiveParameters:nil targetCallBack:^(NSError *err, id responseObject) {
+    /*
+//    WLRRouter *router = ((WLRAppDelegate *)[UIApplication sharedApplication].delegate).router;
+    WLRRouter *router = [WLRRouter globalRouter];
+    router.shouldFallbackGlobalRouter = true;
+    [router handleURL:[NSURL URLWithString:@"/foo/var"] primitiveParameters:nil targetCallBack:^(NSError *err, id responseObject) {
         
     } withCompletionBlock:^(BOOL handled, NSError *error) {
         
     }];
+    */
+    
+    [SVProgressHUD showWithStatus:@"登录中"];
+    [self performSelector:@selector(loginSuccess) withObject:nil afterDelay:3];
+    
 }
+
+- (void)loginSuccess {
+    self.wlr_request.targetCallBack(nil, @{@"userid": @"283773"});
+    [self.navigationController popViewControllerAnimated:true];
+//    [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+}
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -59,7 +76,7 @@
     // Do any additional setup after loading the view.
 }
 -(void)viewDidDisappear:(BOOL)animated{
-    
+    [super viewDidDisappear:animated];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

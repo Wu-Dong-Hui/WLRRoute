@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "WLRRouteMiddlewareProtocol.h"
+#import "WLRRouteInterceptorProtocol.h"
+
 @class WLRRouteRequest;
 @class WLRRouteHandler;
 
@@ -142,5 +144,20 @@ extern NSString *const WLRRouterGlobalRouteScheme;
  @param middleware 中间件
  */
 -(void)removeMiddleware:(id<WLRRouteMiddleware>)middleware;
+
+
+/**
+ 添加一个拦截器
+
+ @param interceptor 拦截器
+ */
+- (void)addInterceptor:(id <WLRRouteInterceptor>)interceptor;
+
+/**
+ 移除一个拦截器
+
+ @param interceptor 拦截器
+ */
+- (void)removeInterceptor:(id <WLRRouteInterceptor>)interceptor;
 @end
 NS_ASSUME_NONNULL_END

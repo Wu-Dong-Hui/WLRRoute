@@ -27,6 +27,7 @@
 		76B4BC881E06A1A100D1E590 /* WLRSignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B4BC871E06A1A100D1E590 /* WLRSignViewController.m */; };
 		76B4BC8B1E06A1AA00D1E590 /* WLRUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B4BC8A1E06A1AA00D1E590 /* WLRUserViewController.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		B02E419C2094473800CF4FC0 /* WLRResumeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B02E419B2094473800CF4FC0 /* WLRResumeViewController.m */; };
 		B539A64D207DA1B9006B789B /* HBXCALLBACKHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B539A64C207DA1B9006B789B /* HBXCALLBACKHandler.m */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,8 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A51FE03D28BD66089799BAAB /* Pods-WLRRoute_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WLRRoute_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WLRRoute_Tests/Pods-WLRRoute_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A70B44062FFC608A80874DF9 /* WLRRoute.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WLRRoute.podspec; path = ../WLRRoute.podspec; sourceTree = "<group>"; };
+		B02E419A2094473800CF4FC0 /* WLRResumeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WLRResumeViewController.h; sourceTree = "<group>"; };
+		B02E419B2094473800CF4FC0 /* WLRResumeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WLRResumeViewController.m; sourceTree = "<group>"; };
 		B302507AE219196694EE98E8 /* Pods-WLRRoute_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WLRRoute_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WLRRoute_Tests/Pods-WLRRoute_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B539A64B207DA1B9006B789B /* HBXCALLBACKHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBXCALLBACKHandler.h; sourceTree = "<group>"; };
 		B539A64C207DA1B9006B789B /* HBXCALLBACKHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBXCALLBACKHandler.m; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				6003F5A6195388D20070C39A /* WLRViewController.m */,
 				76B4BC861E06A1A100D1E590 /* WLRSignViewController.h */,
 				76B4BC871E06A1A100D1E590 /* WLRSignViewController.m */,
+				B02E419A2094473800CF4FC0 /* WLRResumeViewController.h */,
+				B02E419B2094473800CF4FC0 /* WLRResumeViewController.m */,
 				76B4BC891E06A1AA00D1E590 /* WLRUserViewController.h */,
 				76B4BC8A1E06A1AA00D1E590 /* WLRUserViewController.m */,
 				B539A64B207DA1B9006B789B /* HBXCALLBACKHandler.h */,
@@ -390,9 +395,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WLRRoute_Example/Pods-WLRRoute_Example-resources.sh",
+				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -426,6 +434,7 @@
 				76B4BC851E06A18E00D1E590 /* WLRUserHandler.m in Sources */,
 				76B4BC8B1E06A1AA00D1E590 /* WLRUserViewController.m in Sources */,
 				B539A64D207DA1B9006B789B /* HBXCALLBACKHandler.m in Sources */,
+				B02E419C2094473800CF4FC0 /* WLRResumeViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				76B4BC821E06A18400D1E590 /* WLRSignHandler.m in Sources */,
 				76B4BC881E06A1A100D1E590 /* WLRSignViewController.m in Sources */,

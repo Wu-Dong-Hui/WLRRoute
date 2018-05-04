@@ -12,16 +12,38 @@
 #import "WLRUserHandler.h"
 #import "HBXCALLBACKHandler.h"
 #import "WLRSignViewController.h"
+#import "WLRResumeViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+
+@interface ZPMMiddleware: NSObject <WLRRouteMiddleware>
+
+@end
+
+@implementation ZPMMiddleware
+- (NSDictionary *)middlewareHandleRequestWith:(WLRRouteRequest *__autoreleasing *)primitiveRequest error:(NSError *__autoreleasing *)error {
+    return @{@"key": @"value"};
+}
+@end
+
+
 @interface WLRAppDelegate()
 @end
 @implementation WLRAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    
+    [SVProgressHUD setOffsetFromCenter:UIOffsetMake(0, 100)];
+    [SVProgressHUD setMaximumDismissTimeInterval:1];
+    
     self.router = [WLRRouter globalRouter];
     [self.router registerHandler:[[WLRSignHandler alloc]init] forRoute:@"/signin/:phone([0-9]+)"];
     [self.router registerHandler:[[WLRUserHandler alloc]init] forRoute:@"/user"];
+    
+    
+    /*
+    [self.router addMiddleware:[[ZPMMiddleware alloc] init]];
+    
     HBXCALLBACKHandler * x_call_back_handler =[[HBXCALLBACKHandler alloc]init];
     x_call_back_handler.enableException = YES;
     Class signModuleImplClass = NSClassFromString(@"WLRSignViewController");
@@ -32,16 +54,49 @@
     [self.router registerHandler:x_call_back_handler forRoute:@"x-call-back/:path(.*)"];
     x_call_back_handler.router = self.router;
     
+    
+    */
+    
+    
     [self.router setUnhandledURLHandler:^(WLRRouter * _Nonnull routes, NSURL * _Nullable URL, NSDictionary<NSString *,id> * _Nullable parameters) {
         NSLog(@"%@, %@, %@", routes, URL, parameters);
+        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"can not handle the URL %@", URL.absoluteString]];
     }];
     
+    
+    
+    
+    
+    
     [self.router registerBlock:^WLRRouteRequest *(WLRRouteRequest *request) {
+        WLRResumeViewController *vc = [[WLRResumeViewController alloc] init];
+        vc.wlr_request = request;
+        [(UINavigationController *)self.window.rootViewController pushViewController:vc animated:true];
         return request;
-    } forRoute:@"/foo"];
+    } forRoute:@"/foo/var"];
+    
+    
+    
+    for (int i = 0; i < 10; i++) {
+//        [self performSelector:@selector(thread) withObject:nil afterDelay:3];
+//        [self performSelector:@selector(registerRouter:) withObject:[NSString stringWithFormat:@"/path/%@", [NSNumber numberWithInt:i]] afterDelay:2];
+    }
     
     return YES;
 }
+
+- (void)registerRouter:(NSString *)path {
+    dispatch_async(dispatch_queue_create([path cStringUsingEncoding:NSUTF8StringEncoding], DISPATCH_QUEUE_CONCURRENT), ^{
+        [[WLRRouter globalRouter] registerHandler:[[WLRUserHandler alloc] init] forRoute:path];
+    });
+}
+- (void)thread {
+    NSString *name = [NSString stringWithFormat:@"com.zhaopin.r%u", arc4random()];
+    dispatch_async(dispatch_queue_create([name cStringUsingEncoding:NSUTF8StringEncoding], DISPATCH_QUEUE_CONCURRENT), ^{
+        [WLRRouter routerForScheme:name];
+    });
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

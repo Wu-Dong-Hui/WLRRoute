@@ -63,13 +63,7 @@
     _primitiveParams = primitiveParams;
 }
 - (NSString *)description {
-    return [NSString stringWithFormat:
-            @"\n<%@ %p\n"
-            @"\t URL: \"%@\"\n"
-            @"\t queryParameters: \"%@\"\n"
-            @"\t routeParameters: \"%@\"\n"
-            @"\t PrimitiveParam: \"%@\"\n"
-            @">",
+    return [NSString stringWithFormat:@"%@, %p, %@, %@, %@, %@",
             NSStringFromClass([self class]),
             self,
             [self.URL description],

@@ -40,9 +40,25 @@
     [super viewDidLoad];
     NSString * user = self.wlr_request[@"user"];
     self.user.text = user;
-    // Do any additional setup after loading the view.
+    self.user.userInteractionEnabled = true;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+    [self.user addGestureRecognizer:tap];
 }
-
+- (void)tap {
+    WLRRouter *userRouter = [WLRRouter routerForScheme:@"user"];
+    userRouter.shouldFallbackGlobalRouter = true;
+    
+    [userRouter handleURL:[NSURL URLWithString:@"/user/info"] primitiveParameters:@{} targetCallBack:^(NSError * _Nonnull error, id  _Nonnull responseObject) {
+        NSLog(@"%@, %@", error, responseObject);
+    } withCompletionBlock:^(BOOL handled, NSError * _Nonnull error) {
+        NSLog(@"%@", error);
+    }];
+    [userRouter setUnhandledURLHandler:^(WLRRouter * _Nonnull routes, NSURL * _Nullable URL, NSDictionary<NSString *,id> * _Nullable parameters) {
+        
+        self.view.backgroundColor = [UIColor colorWithRed:arc4random()%256/255.0 green:arc4random()%256/255.0 blue:arc4random()%256/255.0 alpha:1];
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
