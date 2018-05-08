@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZPMRoute'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'ZPMRoute is a simple route,it can provide Url matching and custom handler~'
 
 # This description is used to generate tags and improve search results.
@@ -25,8 +25,8 @@ It is used to show how to build a route system in iOS app, and I keep it simple 
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Roy' => 'https://github.com/Wu-Dong-Hui' }
-  s.source           = { :git => 'https://github.com/Wu-Dong-Hui/ZPMRoute.git', :commit => 'c2ef40cd442776c374adfd23a584195a77c0200c' }
-  # s.source           = { :git => 'https://github.com/Wu-Dong-Hui/ZPMRoute.git', :tag => s.version.to_s }
+  # s.source           = { :git => 'https://github.com/Wu-Dong-Hui/ZPMRoute.git', :commit => 'dbc1613cde5e0b1ab46bc0b3c9f16f027ced0477' }
+  s.source           = { :git => 'https://github.com/Wu-Dong-Hui/ZPMRoute.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '7.0'

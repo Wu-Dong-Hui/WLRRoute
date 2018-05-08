@@ -29,7 +29,7 @@
         return NO;
     }
     if (targetViewController != nil) {
-        targetViewController.ZPM_request = request;
+        targetViewController.zpm_request = request;
     }
     BOOL isPreferModal = [self preferModalPresentationWithRequest:request];
     return [self transitionWithWithRequest:request sourceViewController:sourceViewController targetViewController:targetViewController isPreferModal:isPreferModal error:error];

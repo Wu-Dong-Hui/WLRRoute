@@ -20,7 +20,7 @@
     if (!controller) {
         return NO;
     }
-    controller.ZPM_request = request;
+    controller.zpm_request = request;
     [self transitionWithTargetViewController:controller request:request actionName:actionName];
     return YES;
 }
@@ -38,7 +38,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSString * user = self.ZPM_request[@"user"];
+    NSString * user = self.zpm_request[@"user"];
     self.user.text = user;
     self.user.userInteractionEnabled = true;
     

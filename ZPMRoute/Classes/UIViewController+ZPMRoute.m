@@ -10,12 +10,12 @@
 #import <objc/runtime.h>
 #import "ZPMRouteRequest.h"
 @implementation UIViewController (ZPMRoute)
-@dynamic ZPM_request;
--(ZPMRouteRequest *)ZPM_request{
+@dynamic zpm_request;
+-(ZPMRouteRequest *)zpm_request{
     ZPMRouteRequest * dict = objc_getAssociatedObject(self, "ZPM_request");
     return dict;
 }
--(void)setZPM_request:(ZPMRouteRequest *)ZPM_request{
+-(void)setZpm_request:(ZPMRouteRequest *)ZPM_request{
     objc_setAssociatedObject(self, "ZPM_request", ZPM_request, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 +(void)load{
@@ -23,10 +23,10 @@
 }
 -(void)ZPM_viewDidDisappearSwzzled:(BOOL)animated{
     NSLog(@"ZPM_viewDidDisappearSwzzled");
-    if (self.ZPM_request != nil && self.ZPM_request.isConsumed == NO) {
-        [self.ZPM_request defaultFinishTargetCallBack];
+    if (self.zpm_request != nil && self.zpm_request.isConsumed == NO) {
+        [self.zpm_request defaultFinishTargetCallBack];
     }
-    self.ZPM_request = nil;
+    self.zpm_request = nil;
     [self ZPM_viewDidDisappearSwzzled:animated];
 }
 +(void)exchangeMethodWithClass:(Class)class originalSelector:(SEL)originalSelector swizzledSelector:(SEL)swizzledSelector{

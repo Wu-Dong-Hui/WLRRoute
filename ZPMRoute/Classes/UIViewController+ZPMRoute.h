@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 @class ZPMRouteRequest;
 @interface UIViewController (ZPMRoute)
-@property(nonatomic,strong)ZPMRouteRequest * ZPM_request;
+@property(nonatomic,strong)ZPMRouteRequest * zpm_request;
 @end

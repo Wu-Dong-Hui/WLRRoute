@@ -36,9 +36,9 @@
     [SVProgressHUD setOffsetFromCenter:UIOffsetMake(0, 100)];
     [SVProgressHUD setMaximumDismissTimeInterval:1];
     
-    self.router = [ZPMRouter globalRouter];
-    [self.router registerHandler:[[ZPMSignHandler alloc]init] forRoute:@"/signin/:phone([0-9]+)"];
-    [self.router registerHandler:[[ZPMUserHandler alloc]init] forRoute:@"/user"];
+    ZPMRouter *router = [ZPMRouter globalRouter];
+    [router registerHandler:[[ZPMSignHandler alloc]init] forRoute:@"/signin/:phone([0-9]+)"];
+    [router registerHandler:[[ZPMUserHandler alloc]init] forRoute:@"/user"];
     
     
     /*
@@ -58,7 +58,7 @@
     */
     
     
-    [self.router setUnhandledURLHandler:^(ZPMRouter * _Nonnull routes, NSURL * _Nullable URL, NSDictionary<NSString *,id> * _Nullable parameters) {
+    [router setUnhandledURLHandler:^(ZPMRouter * _Nonnull routes, NSURL * _Nullable URL, NSDictionary<NSString *,id> * _Nullable parameters) {
         NSLog(@"%@, %@, %@", routes, URL, parameters);
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"can not handle the URL %@", URL.absoluteString]];
     }];
@@ -68,19 +68,19 @@
     
     
     
-    [self.router registerBlock:^ZPMRouteRequest *(ZPMRouteRequest *request) {
+    [router registerBlock:^ZPMRouteRequest *(ZPMRouteRequest *request) {
         ZPMResumeViewController *vc = [[ZPMResumeViewController alloc] init];
-        vc.ZPM_request = request;
+        vc.zpm_request = request;
         [(UINavigationController *)self.window.rootViewController pushViewController:vc animated:true];
         return request;
     } forRoute:@"/foo/var"];
     
     
     
-    for (int i = 0; i < 10; i++) {
+//    for (int i = 0; i < 10; i++) {
 //        [self performSelector:@selector(thread) withObject:nil afterDelay:3];
 //        [self performSelector:@selector(registerRouter:) withObject:[NSString stringWithFormat:@"/path/%@", [NSNumber numberWithInt:i]] afterDelay:2];
-    }
+//    }
     
     return YES;
 }

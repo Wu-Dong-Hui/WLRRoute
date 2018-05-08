@@ -24,7 +24,7 @@
     if (!controller) {
         return NO;
     }
-    controller.ZPM_request = request;
+    controller.zpm_request = request;
     [self transitionWithTargetViewController:controller request:request actionName:actionName];
     return YES;
 }
@@ -63,7 +63,7 @@
 }
 
 - (void)loginSuccess {
-    self.ZPM_request.targetCallBack(nil, @{@"userid": @"283773"});
+    self.zpm_request.targetCallBack(nil, @{@"userid": @"283773"});
     [self.navigationController popViewControllerAnimated:true];
 //    [SVProgressHUD showSuccessWithStatus:@"登录成功"];
 }
@@ -72,7 +72,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.Phone.text = self.ZPM_request[@"phone"];
+    self.Phone.text = self.zpm_request[@"phone"];
     // Do any additional setup after loading the view.
 }
 -(void)viewDidDisappear:(BOOL)animated{

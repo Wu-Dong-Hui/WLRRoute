@@ -21,7 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.router = ((ZPMAppDelegate *)[UIApplication sharedApplication].delegate).router;
+    self.router = [ZPMRouter globalRouter];
     [self.router addInterceptor:self];
 	// Do any additional setup after loading the view, typically from a nib.
 }
