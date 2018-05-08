@@ -1,8 +1,13 @@
 #use_frameworks!
+platform :ios, '8.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'http://gitlab.dev.zhaopin.com/Mobile/ios-common-index.git'
 
 target 'WLRRoute_Example' do
   pod 'WLRRoute', :path => '../'
   pod 'SVProgressHUD'
+  pod 'ZPMNetwork'
   
   target 'WLRRoute_Tests' do
     inherit! :search_paths
