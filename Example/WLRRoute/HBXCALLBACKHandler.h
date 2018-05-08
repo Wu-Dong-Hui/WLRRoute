@@ -1,22 +1,22 @@
 //
 //  HBXCALLBACKHandler.h
-//  WLRRoute_Example
+//  ZPMRoute_Example
 //
 //  Created by Neo on 2018/4/11.
 //  Copyright © 2018年 Neo. All rights reserved.
 //
 
-#import "WLRRouteHandler.h"
-#import <WLRRoute/WLRRouteRequest.h>
+#import "ZPMRouteHandler.h"
+#import <ZPMRoute/ZPMRouteRequest.h>
 @protocol  HBModuleProtocol<NSObject>
-+(BOOL)handleRequest:(WLRRouteRequest *)request actionName:(NSString *)actionName completionHandler:(WLRRouteCompletionHandler)completionHandler;
++(BOOL)handleRequest:(ZPMRouteRequest *)request actionName:(NSString *)actionName completionHandler:(ZPMRouteCompletionHandler)completionHandler;
 @optional
-+(UIViewController *)targetViewControllerWithRequest:(WLRRouteRequest *)request actionName:(NSString *)actionName completionHandler:(WLRRouteCompletionHandler)completionHandler;
-+(void)transitionWithTargetViewController:(UIViewController *)ViewController request:(WLRRouteRequest *)request actionName:(NSString *)actionName;
++(UIViewController *)targetViewControllerWithRequest:(ZPMRouteRequest *)request actionName:(NSString *)actionName completionHandler:(ZPMRouteCompletionHandler)completionHandler;
++(void)transitionWithTargetViewController:(UIViewController *)ViewController request:(ZPMRouteRequest *)request actionName:(NSString *)actionName;
 @end
-@class WLRRouter;
-@interface HBXCALLBACKHandler : WLRRouteHandler
-@property(nonatomic,weak)WLRRouter * router;
+@class ZPMRouter;
+@interface HBXCALLBACKHandler : ZPMRouteHandler
+@property(nonatomic,weak)ZPMRouter * router;
 @property(nonatomic)BOOL enableException;
 -(void)registeModuleProtocol:(Protocol *)moduleProtocol implClass:(Class)implClass forActionName:(NSString *)actionName;
 @end

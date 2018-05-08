@@ -1,15 +1,15 @@
 //
 //  HBXCALLBACKHandler.m
-//  WLRRoute_Example
+//  ZPMRoute_Example
 //
 //  Created by Neo on 2018/4/11.
 //  Copyright © 2018年 Neo. All rights reserved.
 //
 
 #import "HBXCALLBACKHandler.h"
-#import <WLRRoute/WLRRouteRequest.h>
-#import <WLRRoute/NSError+WLRError.h>
-#import <WLRRoute/WLRRouter.h>
+#import <ZPMRoute/ZPMRouteRequest.h>
+#import <ZPMRoute/NSError+ZPMRouteError.h>
+#import <ZPMRoute/ZPMRouter.h>
 @interface HBXCALLBACKHandler()
 @property (nonatomic, strong) NSMutableDictionary *allModuleDict;
 @property(nonatomic,strong)NSMutableDictionary * actionsMap;
@@ -43,18 +43,18 @@
     }
     return _lock;
 }
--(BOOL)shouldHandleWithRequest:(WLRRouteRequest *)request{
+-(BOOL)shouldHandleWithRequest:(ZPMRouteRequest *)request{
     return YES;
 }
--(UIViewController *)targetViewControllerWithRequest:(WLRRouteRequest *)request{
+-(UIViewController *)targetViewControllerWithRequest:(ZPMRouteRequest *)request{
     
     return [[NSClassFromString(@"HBTestViewController") alloc]init];
 }
--(UIViewController *)sourceViewControllerForTransitionWithRequest:(WLRRouteRequest *)request{
+-(UIViewController *)sourceViewControllerForTransitionWithRequest:(ZPMRouteRequest *)request{
     return [UIApplication sharedApplication].windows[0].rootViewController;
 }
 
--(BOOL)transitionWithWithRequest:(WLRRouteRequest *)request sourceViewController:(UIViewController *)sourceViewController targetViewController:(UIViewController *)targetViewController isPreferModal:(BOOL)isPreferModal error:(NSError *__autoreleasing *)error{
+-(BOOL)transitionWithWithRequest:(ZPMRouteRequest *)request sourceViewController:(UIViewController *)sourceViewController targetViewController:(UIViewController *)targetViewController isPreferModal:(BOOL)isPreferModal error:(NSError *__autoreleasing *)error{
     if (isPreferModal||![sourceViewController isKindOfClass:[UINavigationController class]]) {
         [sourceViewController presentViewController:targetViewController animated:YES completion:nil];
     }
@@ -65,7 +65,7 @@
     return YES;
 }
 
-- (BOOL)preferModalPresentationWithRequest:(WLRRouteRequest *)request;{
+- (BOOL)preferModalPresentationWithRequest:(ZPMRouteRequest *)request;{
     return NO;
 }
 -(void)registeModuleProtocol:(Protocol *)moduleProtocol implClass:(Class)implClass forActionName:(NSString *)actionName;{
@@ -104,16 +104,16 @@
     }
     return NO;
 }
--(BOOL)handleRequest:(WLRRouteRequest *)request error:(NSError *__autoreleasing *)error{
+-(BOOL)handleRequest:(ZPMRouteRequest *)request error:(NSError *__autoreleasing *)error{
     NSLog(@"%@",request.queryParameters);
     NSString * x_success =request.queryParameters[@"x-success"];
     NSString * x_error = request.queryParameters[@"x-error"];
     NSURL * x_error_url = [NSURL URLWithString:x_error];
     NSURL * x_success_url = [NSURL URLWithString:x_success];
     NSString * actionName = request.URL.path;
-    WLRRouteCompletionHandler originalCallBack = request.targetCallBack;
+    ZPMRouteCompletionHandler originalCallBack = request.targetCallBack;
     __weak typeof(self) weakSelf = self;
-    WLRRouteCompletionHandler callBack = ^(NSError *callback_error,NSDictionary * responseObject){
+    ZPMRouteCompletionHandler callBack = ^(NSError *callback_error,NSDictionary * responseObject){
         if (originalCallBack) {
             originalCallBack(callback_error,responseObject);
         }
@@ -132,7 +132,7 @@
     request.targetCallBack = callBack;
     Class impl = [self implClassWithActionName:actionName];
     if (impl == nil) {
-        *error = [NSError WLRHandleRequestErrorWithMessage:[NSString stringWithFormat:@"not found module with actionName:%@",actionName]];
+        *error = [NSError ZPMHandleRequestErrorWithMessage:[NSString stringWithFormat:@"not found module with actionName:%@",actionName]];
         return NO;
     }
     BOOL isHandle = [impl handleRequest:request actionName:actionName completionHandler:callBack];

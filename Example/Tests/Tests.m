@@ -1,16 +1,16 @@
 //
-//  WLRRouteTests.m
-//  WLRRouteTests
+//  ZPMRouteTests.m
+//  ZPMRouteTests
 //
 //  Created by Neo on 12/18/2016.
 //  Copyright (c) 2016 Neo. All rights reserved.
 //
 
 @import XCTest;
-#import <WLRRoute/WLRRoute.h>
+#import <ZPMRoute/ZPMRoute.h>
 #import "HBXCALLBACKHandler.h"
 @interface Tests : XCTestCase
-@property(nonatomic,strong)WLRRouter * router;
+@property(nonatomic,strong)ZPMRouter * router;
 
 @end
 
@@ -18,7 +18,7 @@
 
 - (void)setUp
 {
-    self.router = [[WLRRouter alloc]init];
+    self.router = [[ZPMRouter alloc]init];
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
@@ -31,9 +31,9 @@
 
 - (void)testExample
 {
-    self.router = [[WLRRouter alloc]init];
+    self.router = [[ZPMRouter alloc]init];
     [self.router registerHandler:[[HBXCALLBACKHandler alloc]init] forRoute:@"x-call-back/:path(.*)"];
-    NSURL * url = [NSURL URLWithString:@"WLRDemo://x-call-back/user/register?x-success=WLRDemo%3a%2f%2fx-call-back%2fuser%2fregister_success&x-error=WLRDemo%3a%2f%2fx-call-back%2falert%26message%3dregister+fail&phone=15890077643"];
+    NSURL * url = [NSURL URLWithString:@"ZPMDemo://x-call-back/user/register?x-success=ZPMDemo%3a%2f%2fx-call-back%2fuser%2fregister_success&x-error=ZPMDemo%3a%2f%2fx-call-back%2falert%26message%3dregister+fail&phone=15890077643"];
     [self.router handleURL:url primitiveParameters:nil targetCallBack:^(NSError *error, id responseObject) {
         
     } withCompletionBlock:^(BOOL handled, NSError *error) {

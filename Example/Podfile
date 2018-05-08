@@ -5,7 +5,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 source 'http://gitlab.dev.zhaopin.com/Mobile/ios-common-index.git'
 
 target 'WLRRoute_Example' do
-  pod 'WLRRoute', :path => '../'
+  pod 'ZPMRoute', :path => '../'
   pod 'SVProgressHUD'
   pod 'ZPMNetwork'
   

@@ -1,0 +1,22 @@
+{
+  "name": "ZPMRoute",
+  "version": "0.1.0",
+  "summary": "ZPMRoute is a simple route,it can provide Url matching and custom handler~",
+  "description": "It is used to show how to build a route system in iOS app, and I keep it simple and clear.ZPMRoute provide url matching , primitive parameters transfer, target callback block , custom handler can overwrite  transitionWithRequest to navigate source to target.",
+  "homepage": "https://github.com/Wu-Dong-Hui/WLRRoute",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Roy": "https://github.com/Wu-Dong-Hui"
+  },
+  "source": {
+    "git": "https://github.com/Wu-Dong-Hui/WLRRoute.git",
+    "commit": "c2ef40cd442776c374adfd23a584195a77c0200c"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source_files": "ZPMRoute/Classes/**/*"
+}

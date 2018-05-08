@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6CE25267180FFC393F87502B7A51F797'
+               BlueprintIdentifier = '065D3D0E0838A2A2DFFC07C3C2DD06C4'
                BlueprintName = 'ZPMNetwork'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libZPMNetwork.a'>

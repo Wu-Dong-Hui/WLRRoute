@@ -15,25 +15,25 @@ PODS:
   - AFNetworking/UIKit (3.0.4):
     - AFNetworking/NSURLSession
   - SVProgressHUD (2.1.2)
-  - WLRRoute (0.1.0)
   - ZPMNetwork (1.0.5):
     - AFNetworking (~> 3.0.0)
+  - ZPMRoute (0.1.0)
 
 DEPENDENCIES:
   - SVProgressHUD
-  - WLRRoute (from `../`)
   - ZPMNetwork
+  - ZPMRoute (from `../`)
 
 EXTERNAL SOURCES:
-  WLRRoute:
+  ZPMRoute:
     :path: ../
 
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  WLRRoute: a89e8c807e4c614d42f96d898872a159da96bcf1
   ZPMNetwork: 729becd83cad0a6d329d4c930dad9719aa63d49c
+  ZPMRoute: 8e6a909c8a62368dd040478ad3f015edd2125f95
 
-PODFILE CHECKSUM: 667f338607c9ea81dc22a661c91ccf200f0b85c6
+PODFILE CHECKSUM: 02bb996146bfc433be8b3c49839e043589600f8c
 
 COCOAPODS: 1.3.1

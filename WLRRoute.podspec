@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint WLRRoute.podspec' to ensure this is a
+# Be sure to run `pod lib lint ZPMRoute.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'WLRRoute'
+  s.name             = 'ZPMRoute'
   s.version          = '0.1.0'
-  s.summary          = 'WLRRoute is a simple route,it can provide Url matching and custom handler~'
+  s.summary          = 'ZPMRoute is a simple route,it can provide Url matching and custom handler~'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,22 +18,22 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-It is used to show how to build a route system in iOS app, and I keep it simple and clear.WLRRoute provide url matching , primitive parameters transfer, target callback block , custom handler can overwrite  transitionWithRequest to navigate source to target.
+It is used to show how to build a route system in iOS app, and I keep it simple and clear.ZPMRoute provide url matching , primitive parameters transfer, target callback block , custom handler can overwrite  transitionWithRequest to navigate source to target.
                        DESC
 
-  s.homepage         = 'https://github.com/Neojoke/WLRRoute'
+  s.homepage         = 'https://github.com/Neojoke/ZPMRoute'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Neo' => '394570610@qq.com' }
-  s.source           = { :git => 'https://github.com/Neojoke/WLRRoute.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/Neojoke/ZPMRoute.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '7.0'
 
-  s.source_files = 'WLRRoute/Classes/**/*'
+  s.source_files = 'ZPMRoute/Classes/**/*'
   
   # s.resource_bundles = {
-  #   'WLRRoute' => ['WLRRoute/Assets/*.png']
+  #   'ZPMRoute' => ['ZPMRoute/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
