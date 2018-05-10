@@ -1,20 +1,19 @@
 # ZPMRoute
-
-[![CI Status](http://img.shields.io/travis/Neo/ZPMRoute.svg?style=flat)](https://travis-ci.org/Neo/ZPMRoute)
-[![Version](https://img.shields.io/cocoapods/v/ZPMRoute.svg?style=flat)](http://cocoapods.org/pods/ZPMRoute)
-[![License](https://img.shields.io/cocoapods/l/ZPMRoute.svg?style=flat)](http://cocoapods.org/pods/ZPMRoute)
-[![Platform](https://img.shields.io/cocoapods/p/ZPMRoute.svg?style=flat)](http://cocoapods.org/pods/ZPMRoute)
+This is a sample router for iOS
 
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
-
+iOS 8 and later
 ## Installation
 
-ZPMRoute is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+ZPMRoute is private cocoapods， To install
+
+add following line in your Podfile at top
+
+source 'http://gitlab.dev.zhaopin.com/Mobile/ios-common-index.git'
 
 ```ruby
 pod "ZPMRoute"
