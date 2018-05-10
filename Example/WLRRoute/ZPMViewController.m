@@ -10,10 +10,15 @@
 #import <ZPMRoute/ZPMRoute.h>
 #import "ZPMAppDelegate.h"
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <ZPMRoute/ZPMRouteInterceptorProtocol.h>
+#import <ZPMNetwork/ZPMNetwork.h>
+#import "ZPMService.h"
+#import "ZPMResumeWebViewController.h"
 
 @interface ZPMViewController ()<ZPMRouteMiddleware, ZPMRouteInterceptor>
 @property(nonatomic,weak)ZPMRouter * router;
+
+
+@property (nonatomic, copy) NSArray *falsifyURLs;
 @end
 
 @implementation ZPMViewController
@@ -24,6 +29,18 @@
     self.router = [ZPMRouter globalRouter];
     [self.router addInterceptor:self];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [[ZPMNetworkAgent sharedAgent] getService:[[ZPMService alloc] init] url:@"route_config" parms:@{} success:^(__kindof ZPMBaseRequest * _Nonnull request) {
+        NSLog(@"success %@", request.responseObject);
+        weakSelf.falsifyURLs = [request.responseObject copy];
+    } failure:^(__kindof ZPMBaseRequest * _Nonnull request) {
+        NSLog(@"fail %@", request.error);
+    }];
+    
+    
+    
 }
 -(NSDictionary *)middlewareHandleRequestWith:(ZPMRouteRequest *__autoreleasing *)primitiveRequest error:(NSError *__autoreleasing *)error{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -35,7 +52,7 @@
 //    return @{@"result":@"yes"};
 }
 - (IBAction)userClick:(UIButton *)sender {
-    [self.router handleURL:[NSURL URLWithString:@"ZPMDemo://com.ZPMroute.demo/user"] primitiveParameters:@{@"user":@"Neo~🙃🙃"} targetCallBack:^(NSError *error, id responseObject) {
+    [self.router handleURL:[NSURL URLWithString:@"/user"] primitiveParameters:@{@"user":@"Neo~🙃🙃"} targetCallBack:^(NSError *error, id responseObject) {
         NSLog(@"UserCallBack %@", responseObject);
     } withCompletionBlock:^(BOOL handled, NSError *error) {
         NSLog(@"UserHandleCompletion %@", error);
@@ -62,6 +79,12 @@
     
     */
 }
+- (IBAction)go2resumeDetail:(UIButton *)sender {
+    ZPMResumeWebViewController *vc = [[ZPMResumeWebViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:true];
+    
+    
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -83,5 +106,13 @@
 }
 - (void)router:(ZPMRouter *)router didFailHandleURL:(NSURL *)URL {
     NSLog(@"ZPMRouteInterceptor~router:%@, ~didFailHandleURL:%@", router, URL);
+}
+- (NSURL *)router:(ZPMRouter *)router falsifyURL:(NSURL *)originURL {
+    for (NSDictionary *dic in self.falsifyURLs) {
+        if ([[dic objectForKey:@"originPath"] isEqualToString:originURL.absoluteString]) {
+            return [NSURL URLWithString:[dic objectForKey:@"newPath"]];
+        }
+    }
+    return originURL;
 }
 @end

@@ -50,7 +50,7 @@
 //    ZPMRouter *router = ((ZPMAppDelegate *)[UIApplication sharedApplication].delegate).router;
     ZPMRouter *router = [ZPMRouter globalRouter];
     router.shouldFallbackGlobalRouter = true;
-    [router handleURL:[NSURL URLWithString:@"/foo/var"] primitiveParameters:nil targetCallBack:^(NSError *err, id responseObject) {
+    [router handleURL:[NSURL URLWithString:@"/resume/detail"] primitiveParameters:nil targetCallBack:^(NSError *err, id responseObject) {
         
     } withCompletionBlock:^(BOOL handled, NSError *error) {
         

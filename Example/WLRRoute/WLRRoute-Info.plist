@@ -25,9 +25,11 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>appself</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>ZPMDemo</string>
+				<string>ZPMRouteDemo</string>
 			</array>
 		</dict>
 	</array>

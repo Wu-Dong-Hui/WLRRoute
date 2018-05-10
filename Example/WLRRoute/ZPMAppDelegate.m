@@ -73,7 +73,7 @@
         vc.zpm_request = request;
         [(UINavigationController *)self.window.rootViewController pushViewController:vc animated:true];
         return request;
-    } forRoute:@"/foo/var"];
+    } forRoute:@"/resume/detail"];
     
     
     
@@ -81,6 +81,23 @@
 //        [self performSelector:@selector(thread) withObject:nil afterDelay:3];
 //        [self performSelector:@selector(registerRouter:) withObject:[NSString stringWithFormat:@"/path/%@", [NSNumber numberWithInt:i]] afterDelay:2];
 //    }
+    
+#pragma mark - 16.用户收到推送则打开对应的页面，如职位详情
+    /*
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    
+    
+    
+    UILocalNotification *noti = [[UILocalNotification alloc] init];
+    noti.fireDate = [NSDate dateWithTimeIntervalSinceNow:5];
+    noti.timeZone = [NSTimeZone defaultTimeZone];
+    noti.applicationIconBadgeNumber = 1;
+    noti.soundName = UILocalNotificationDefaultSoundName;
+    noti.alertTitle = @"title";
+    noti.alertBody = @"body";
+    noti.userInfo = @{@"path": @"resume", @"id": @"123456"};
+    [application scheduleLocalNotification:noti];
+    */
     
     return YES;
 }
@@ -123,6 +140,42 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    if (notification.userInfo && notification.userInfo[@"path"] && notification.userInfo[@"id"]) {
+        if ([notification.userInfo[@"path"] isEqualToString:@"resume"]) {
+            [[ZPMRouter globalRouter] handleURL:[NSURL URLWithString:@"/resume/detail"] primitiveParameters:notification.userInfo targetCallBack:^(NSError * _Nonnull error, id  _Nonnull responseObject) {
+                
+            } withCompletionBlock:^(BOOL handled, NSError * _Nonnull error) {
+                
+            }];
+        }
+    }
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+#pragma mark - 15.在浏览器打开智联相关链接，如果手机上有安装APP，则打开APP的相关页面，如职位详情
+    // ZPMRouteDemo://zhaopin.com/resume/detail?id=123456
+    if (url && url.host && url.path.length > 0) {
+        NSLog(@"url: %@, host: %@, pathComponts: %@, query: %@\n", url, url.host, url.pathComponents, url.query);
+        
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        for (NSURLQueryItem *qitem in [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:false].queryItems) {
+            NSLog(@"%@ = %@", qitem.name, qitem.value);
+            params[qitem.name] = qitem.value;
+        }
+        
+        
+        if ([url.pathComponents containsObject:@"resume"]) {
+            [[ZPMRouter globalRouter] handleURL:[NSURL URLWithString:@"/resume/detail"] primitiveParameters:[params copy] targetCallBack:^(NSError * _Nonnull error, id  _Nonnull responseObject) {
+                
+            } withCompletionBlock:^(BOOL handled, NSError * _Nonnull error) {
+                
+            }];
+        }
+    }
+    return true;
 }
 
 @end

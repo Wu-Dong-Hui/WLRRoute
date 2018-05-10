@@ -27,7 +27,10 @@
 		76B4BC881E06A1A100D1E590 /* ZPMSignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B4BC871E06A1A100D1E590 /* ZPMSignViewController.m */; };
 		76B4BC8B1E06A1AA00D1E590 /* ZPMUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B4BC8A1E06A1AA00D1E590 /* ZPMUserViewController.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		B022595220A3DA2100D7F77A /* ZPMResumeWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B022595120A3DA2100D7F77A /* ZPMResumeWebViewController.m */; };
+		B022595420A3E13200D7F77A /* resumeDetail.html in Resources */ = {isa = PBXBuildFile; fileRef = B022595320A3E13200D7F77A /* resumeDetail.html */; };
 		B02E419C2094473800CF4FC0 /* ZPMResumeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B02E419B2094473800CF4FC0 /* ZPMResumeViewController.m */; };
+		B06C81E320A2A49F00F36F9F /* ZPMService.m in Sources */ = {isa = PBXBuildFile; fileRef = B06C81E220A2A49F00F36F9F /* ZPMService.m */; };
 		B539A64D207DA1B9006B789B /* HBXCALLBACKHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B539A64C207DA1B9006B789B /* HBXCALLBACKHandler.m */; };
 /* End PBXBuildFile section */
 
@@ -76,8 +79,13 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A51FE03D28BD66089799BAAB /* Pods-WLRRoute_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WLRRoute_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WLRRoute_Tests/Pods-WLRRoute_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A70B44062FFC608A80874DF9 /* WLRRoute.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WLRRoute.podspec; path = ../WLRRoute.podspec; sourceTree = "<group>"; };
+		B022595020A3DA2100D7F77A /* ZPMResumeWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZPMResumeWebViewController.h; sourceTree = "<group>"; };
+		B022595120A3DA2100D7F77A /* ZPMResumeWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZPMResumeWebViewController.m; sourceTree = "<group>"; };
+		B022595320A3E13200D7F77A /* resumeDetail.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = resumeDetail.html; sourceTree = "<group>"; };
 		B02E419A2094473800CF4FC0 /* ZPMResumeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZPMResumeViewController.h; sourceTree = "<group>"; };
 		B02E419B2094473800CF4FC0 /* ZPMResumeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZPMResumeViewController.m; sourceTree = "<group>"; };
+		B06C81E120A2A49F00F36F9F /* ZPMService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZPMService.h; sourceTree = "<group>"; };
+		B06C81E220A2A49F00F36F9F /* ZPMService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZPMService.m; sourceTree = "<group>"; };
 		B302507AE219196694EE98E8 /* Pods-WLRRoute_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WLRRoute_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WLRRoute_Tests/Pods-WLRRoute_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B539A64B207DA1B9006B789B /* HBXCALLBACKHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBXCALLBACKHandler.h; sourceTree = "<group>"; };
 		B539A64C207DA1B9006B789B /* HBXCALLBACKHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBXCALLBACKHandler.m; sourceTree = "<group>"; };
@@ -148,6 +156,7 @@
 		6003F593195388D20070C39A /* Example for WLRRoute */ = {
 			isa = PBXGroup;
 			children = (
+				B022595320A3E13200D7F77A /* resumeDetail.html */,
 				6003F59C195388D20070C39A /* ZPMAppDelegate.h */,
 				6003F59D195388D20070C39A /* ZPMAppDelegate.m */,
 				76B4BC801E06A18400D1E590 /* ZPMSignHandler.h */,
@@ -161,10 +170,14 @@
 				76B4BC871E06A1A100D1E590 /* ZPMSignViewController.m */,
 				B02E419A2094473800CF4FC0 /* ZPMResumeViewController.h */,
 				B02E419B2094473800CF4FC0 /* ZPMResumeViewController.m */,
+				B022595020A3DA2100D7F77A /* ZPMResumeWebViewController.h */,
+				B022595120A3DA2100D7F77A /* ZPMResumeWebViewController.m */,
 				76B4BC891E06A1AA00D1E590 /* ZPMUserViewController.h */,
 				76B4BC8A1E06A1AA00D1E590 /* ZPMUserViewController.m */,
 				B539A64B207DA1B9006B789B /* HBXCALLBACKHandler.h */,
 				B539A64C207DA1B9006B789B /* HBXCALLBACKHandler.m */,
+				B06C81E120A2A49F00F36F9F /* ZPMService.h */,
+				B06C81E220A2A49F00F36F9F /* ZPMService.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
@@ -306,6 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B022595420A3E13200D7F77A /* resumeDetail.html in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
@@ -431,6 +445,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* ZPMAppDelegate.m in Sources */,
+				B022595220A3DA2100D7F77A /* ZPMResumeWebViewController.m in Sources */,
+				B06C81E320A2A49F00F36F9F /* ZPMService.m in Sources */,
 				6003F5A7195388D20070C39A /* ZPMViewController.m in Sources */,
 				76B4BC851E06A18E00D1E590 /* ZPMUserHandler.m in Sources */,
 				76B4BC8B1E06A1AA00D1E590 /* ZPMUserViewController.m in Sources */,
