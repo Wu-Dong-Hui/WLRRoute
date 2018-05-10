@@ -15,6 +15,6 @@
 - (void)router:(ZPMRouter *)router willFallbackGlobalRouterForURL:(NSURL *)URL;
 - (void)router:(ZPMRouter *)router didSuccessHandleURL:(NSURL *)URL;
 - (void)router:(ZPMRouter *)router didFailHandleURL:(NSURL *)URL;
-
+- (NSURL *)router:(ZPMRouter *)router falsifyURL:(NSURL *)originURL;
 @end
 

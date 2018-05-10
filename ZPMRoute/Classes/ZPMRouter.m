@@ -188,17 +188,24 @@ static NSMutableDictionary *ZPMGlobal_routeControllersMap = nil;
     NSError * error;
     ZPMRouteRequest * request;
     __block BOOL isHandled = NO;
+    NSURL *falsifiedURL = URL;
+    for (id <ZPMRouteInterceptor> interceptor in self.interceptors) {
+        if (interceptor && [interceptor respondsToSelector:@selector(router:falsifyURL:)]) {
+            falsifiedURL = [interceptor router:self falsifyURL:falsifiedURL];
+        }
+    }
+    
     
     for (id <ZPMRouteInterceptor> interceptor in self.interceptors) {
         if (interceptor && [interceptor respondsToSelector:@selector(router:willHandleURL:)]) {
-            [interceptor router:self willHandleURL:URL];
+            [interceptor router:self willHandleURL:falsifiedURL];
         }
     }
     
     
     for (NSString * route in self.routeMatchers.allKeys) {
         ZPMRouteMatcher * matcher = [self.routeMatchers objectForKey:route];
-        request = [matcher createRequestWithURL:URL primitiveParameters:primitiveParameters targetCallBack:targetCallBack];
+        request = [matcher createRequestWithURL:falsifiedURL primitiveParameters:primitiveParameters targetCallBack:targetCallBack];
         /*
         if (request) {
             NSDictionary * responseObject;
@@ -225,7 +232,7 @@ static NSMutableDictionary *ZPMGlobal_routeControllersMap = nil;
         if (request) {
             for (id <ZPMRouteInterceptor> interceptor in self.interceptors) {
                 if (interceptor && [interceptor respondsToSelector:@selector(router:willHandleURL:request:)]) {
-                    [interceptor router:self willHandleURL:URL request:request];
+                    [interceptor router:self willHandleURL:falsifiedURL request:request];
                 }
             }
             isHandled = [self handleRouteExpression:route withRequest:request error:&error];
@@ -238,26 +245,26 @@ static NSMutableDictionary *ZPMGlobal_routeControllersMap = nil;
     if (isHandled == false && self.shouldFallbackGlobalRouter && ![self.scheme isEqualToString:ZPMRouterGlobalRouteScheme]) {
         for (id <ZPMRouteInterceptor> interceptor in self.interceptors) {
             if (interceptor && [interceptor respondsToSelector:@selector(router:willFallbackGlobalRouterForURL:)]) {
-                [interceptor router:self willFallbackGlobalRouterForURL:URL];
+                [interceptor router:self willFallbackGlobalRouterForURL:falsifiedURL];
             }
         }
-        isHandled = [[ZPMRouter globalRouter] handleURL:URL primitiveParameters:primitiveParameters targetCallBack:targetCallBack withCompletionBlock:completionBlock];
+        isHandled = [[ZPMRouter globalRouter] handleURL:falsifiedURL primitiveParameters:primitiveParameters targetCallBack:targetCallBack withCompletionBlock:completionBlock];
     }
     if (isHandled == false && self.unhandledURLHandler != nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.unhandledURLHandler(self, URL, primitiveParameters);
+            self.unhandledURLHandler(self, falsifiedURL, primitiveParameters);
         });
     }
     if (isHandled) {
         for (id <ZPMRouteInterceptor> interceptor in self.interceptors) {
             if (interceptor && [interceptor respondsToSelector:@selector(router:didSuccessHandleURL:)]) {
-                [interceptor router:self didSuccessHandleURL:URL];
+                [interceptor router:self didSuccessHandleURL:falsifiedURL];
             }
         }
     } else {
         for (id <ZPMRouteInterceptor> interceptor in self.interceptors) {
             if (interceptor && [interceptor respondsToSelector:@selector(router:didFailHandleURL:)]) {
-                [interceptor router:self didFailHandleURL:URL];
+                [interceptor router:self didFailHandleURL:falsifiedURL];
             }
         }
     }

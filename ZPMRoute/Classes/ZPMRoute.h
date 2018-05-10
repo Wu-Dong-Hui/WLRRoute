@@ -31,6 +31,6 @@
 #import "ZPMRouteMiddlewareProtocol.h"
 #import "ZPMRouter.h"
 #import "ZPMRouteRequest.h"
-
+#import "ZPMRouteInterceptorProtocol.h"
 
 #endif /* ZPMRoute_h */
